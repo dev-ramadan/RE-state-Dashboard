@@ -1,0 +1,41 @@
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import type { Users } from "../../types/usersTypes";
+const BaseUrl = import.meta.env.VITE_BASE_URL;
+export const UsersApi = createApi({
+    reducerPath: "UsersApi",
+    baseQuery: fetchBaseQuery({
+        baseUrl: BaseUrl,
+  prepareHeaders: (headers) => {
+      const token = localStorage.getItem("token"); 
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+      }
+      headers.set("Content-Type", "application/json");
+      return headers;
+    },
+    }),
+    tagTypes: ["Users"],
+    endpoints: (builder) => ({
+        getCustomers: builder.query<Users[], void>({
+            query: () => "user",
+            transformResponse: (response: { isSuccess: boolean; message: string; data: { items: Users[] } }) => {
+                return response.data.items
+            },
+            providesTags: ["Users"],
+        }),
+        getCustomerById: builder.query<Users, string>({
+            query: (id) => `user/${id}`,
+            providesTags: ["Users"],
+        }),
+        deleteCustomer: builder.mutation<void, string>({
+            query: (id) => ({
+                url: `user/${id}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Users"],
+        }),
+    })
+
+});
+
+export const { useGetCustomersQuery } = UsersApi
