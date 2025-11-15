@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { useDeleteAgentMutation, useGetAgentByIdQuery, useGetAgentQuery } from "../Redux/api/Agent";
+import { useDeleteAgentMutation, useGetAgentQuery } from "../Redux/api/Agent";
 import { Trash2, Edit, Info } from "lucide-react";
 
 interface IProps { }
