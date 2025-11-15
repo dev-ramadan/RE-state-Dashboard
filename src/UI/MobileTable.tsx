@@ -2,8 +2,8 @@
 import React from "react";
 
 interface Column<T> {
-  label: string; // العنوان اللي هيظهر
-  key: keyof T; // المفتاح من نوع البيانات
+  label: string; 
+  key: keyof T; 
   render?: (item: T) => React.ReactNode; // لو عايز تخصيص
 }
 

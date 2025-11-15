@@ -5,14 +5,14 @@ export const UsersApi = createApi({
     reducerPath: "UsersApi",
     baseQuery: fetchBaseQuery({
         baseUrl: BaseUrl,
-  prepareHeaders: (headers) => {
-      const token = localStorage.getItem("token"); 
-      if (token) {
-        headers.set("Authorization", `Bearer ${token}`);
-      }
-      headers.set("Content-Type", "application/json");
-      return headers;
-    },
+        prepareHeaders: (headers) => {
+            const token = localStorage.getItem("token");
+            if (token) {
+                headers.set("Authorization", `Bearer ${token}`);
+            }
+            headers.set("Content-Type", "application/json");
+            return headers;
+        },
     }),
     tagTypes: ["Users"],
     endpoints: (builder) => ({
@@ -23,11 +23,12 @@ export const UsersApi = createApi({
             },
             providesTags: ["Users"],
         }),
-        getCustomerById: builder.query<Users, string>({
+        getUserById: builder.query<any, string>({
             query: (id) => `user/${id}`,
+
             providesTags: ["Users"],
         }),
-        deleteCustomer: builder.mutation<void, string>({
+        deleteUser: builder.mutation<void, string>({
             query: (id) => ({
                 url: `user/${id}`,
                 method: "DELETE",
@@ -38,4 +39,4 @@ export const UsersApi = createApi({
 
 });
 
-export const { useGetCustomersQuery } = UsersApi
+export const { useGetCustomersQuery, useDeleteUserMutation, useGetUserByIdQuery } = UsersApi

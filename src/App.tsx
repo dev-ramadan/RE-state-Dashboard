@@ -1,8 +1,10 @@
-import { Outlet, RouterProvider } from "react-router"
+import {  RouterProvider } from "react-router"
 import { route } from "./routes"
 import "./App.css"
 
 function App() {
+
+
 
   return (
     <>

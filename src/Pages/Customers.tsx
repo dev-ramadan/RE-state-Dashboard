@@ -1,12 +1,19 @@
-import { useGetCustomersQuery } from "../Redux/api/Users";
-import { useState } from "react";
-import { Trash2, Edit } from "lucide-react";
+import { useDeleteUserMutation, useGetCustomersQuery } from "../Redux/api/Users";
+import { Trash2, Edit, Info } from "lucide-react";
+import { Link } from "react-router";
 
-interface IProps {}
+interface IProps { }
 
-const Customers = ({}: IProps) => {
+const Customers = ({ }: IProps) => {
   const { data: users, isError, isLoading } = useGetCustomersQuery();
-  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [deleteUser] = useDeleteUserMutation()
+  const handleDelete = async (id: string) => {
+    try {
+       await deleteUser(id).unwrap();
+    } catch (err) {
+      console.error("Failed to delete broker:", err);
+    }
+  };
 
   if (isLoading)
     return (
@@ -27,7 +34,7 @@ const Customers = ({}: IProps) => {
       <h1 className="text-2xl font-bold mb-4">Customers</h1>
 
       {/* Table for larger screens */}
-      <div className="hidden md:block overflow-x-auto rounded-lg shadow">
+      <div className="hidden md:block overflow-auto rounded-lg shadow">
         <table className="w-full text-left border-collapse">
           <thead className="bg-gray-100">
             <tr>
@@ -59,7 +66,10 @@ const Customers = ({}: IProps) => {
                     className="p-1 rounded hover:bg-red-100 text-red-500 transition"
                     title="Delete"
                   >
-                    <Trash2 />
+                    <Trash2 onClick={() => handleDelete(user.userId)} />
+                  </button>
+                  <button className="p-1 rounded hover:bg-red-100 text-green-500 transition">
+                    <Link to={`/userDetails/${user.userId}`}> <Info /> </Link>
                   </button>
                 </td>
               </tr>
@@ -82,7 +92,10 @@ const Customers = ({}: IProps) => {
                   <Edit />
                 </button>
                 <button className="p-1 rounded hover:bg-red-100 text-red-500 transition">
-                  <Trash2 />
+                  <Trash2 onClick={() => handleDelete(user.userId)} />
+                </button>
+                <button className="p-1 rounded hover:bg-red-100 text-green-500 transition">
+                  <Link to={`/userDetails/${user.userId}`}> <Info /> </Link>
                 </button>
               </div>
             </div>
