@@ -1,4 +1,3 @@
-import { Eye, ShoppingCart, DollarSign } from "lucide-react";
 import type { ReactNode } from "react";
 
 interface CardProps {
