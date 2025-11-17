@@ -25,7 +25,7 @@ export function MobileTable<T extends { [key: string]: any }>({
   }
 
   return (
-    <div className="grid gap-4 md:hidden">
+    <div className="grid gap-4 md:hidden mx-auto">
       {data.slice(0, maxItems).map((item, index) => (
         <div
           key={item[columns[0].key] || index}
