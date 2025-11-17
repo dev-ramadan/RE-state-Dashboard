@@ -20,7 +20,7 @@ const Agent = ({ }: IProps) => {
   if (isLoading)
     return (
       <div className="flex justify-center items-center h-64">
-        <p className="text-gray-500">Loading Agent...</p>
+        <p className="text-gray-500 animate-pulse">Loading Agent...</p>
       </div>
     );
 

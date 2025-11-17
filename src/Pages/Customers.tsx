@@ -7,6 +7,8 @@ interface IProps { }
 const Customers = ({ }: IProps) => {
   const { data: users, isError, isLoading } = useGetCustomersQuery();
   const [deleteUser] = useDeleteUserMutation()
+  console.log(users);
+  
   const handleDelete = async (id: string) => {
     try {
        await deleteUser(id).unwrap();
@@ -18,7 +20,7 @@ const Customers = ({ }: IProps) => {
   if (isLoading)
     return (
       <div className="flex justify-center items-center h-64">
-        <p className="text-gray-500">Loading users...</p>
+        <p className="text-gray-500 animate-pulse">Loading users...</p>
       </div>
     );
 

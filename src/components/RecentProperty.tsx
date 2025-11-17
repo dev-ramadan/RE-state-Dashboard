@@ -1,20 +1,20 @@
 import { Link } from "react-router";
-import { useGetCompoundQuery } from "../Redux/api/Property";
 import { DesktopTable, type Column } from "../UI/DesktopTable";
 import type { Compound } from "../types/propertyTypes";
 import { MobileTable } from "../UI/MobileTable";
+import { useProperty } from "../hooks/useProperty";
 const columns:Column<Compound>[] | any = [
-  { key: "compoundId", header: "ID" },
-  { key: "name", header: "Name" },
+  { key: "propertyId", header: "ID" },
+  { key: "title", header: "Name" },
   { key: "city", header: "City" },
 ];
 
 const RecentProperty = () => {
-  const { data: property = [], isError, isLoading } = useGetCompoundQuery()
+  const {residentialProperties,isError,isLoading} = useProperty({pageNumber:1,pageSize:4})
     
   if (isLoading)
     return (
-      <div className="bg-white p-6 rounded-2xl shadow-md flex justify-center items-center h-48">
+      <div className="bg-white p-6 rounded-2xl shadow-md flex justify-center items-center h-auto">
         <span className="text-gray-500 animate-pulse">Loading property...</span>
       </div>
     );
@@ -37,13 +37,12 @@ const RecentProperty = () => {
         </button>
         </Link>
       </div>
-
       {/*  TABLE - Visible on md and larger */}
-      <DesktopTable  data={property||[]} columns={columns} sliceCount={4}/>
+      <DesktopTable  data={residentialProperties||[]} columns={columns} sliceCount={4}/>
 
 
       {/*  MOBILE CARDS - Visible only on small screens */}
-      <MobileTable columns={columns} data={property} maxItems={4}/>
+      <MobileTable columns={columns} data={residentialProperties} maxItems={4}/>
     </div>
   );
 };

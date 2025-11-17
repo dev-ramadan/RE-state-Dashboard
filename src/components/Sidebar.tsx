@@ -1,4 +1,4 @@
-import { HomeIcon, User, LogOut, User2, UserCircle2 } from "lucide-react";
+import { HomeIcon, User, LogOut, User2, UserCircle2, HouseHeartIcon } from "lucide-react";
 import { useContext } from "react";
 import { NavLink } from "react-router";
 import { OureContext } from "../context/globale";
@@ -13,6 +13,7 @@ const Sidebar = () => {
     { icon: <User2 />, title: "Users", link: "/customer" },
     { icon: <UserCircle2 />, title: "Agent", link: "/agent" },
     { icon: <User />, title: "Broker", link: "/broker" },
+    { icon: <HouseHeartIcon />, title: "Property", link: "/property" },
     { icon: <LogOut />, title: "Sign Out", link: "/" },
   ];
 
@@ -23,7 +24,7 @@ const Sidebar = () => {
       `}
     >
       {openSidebare && (
-        <div className="p-4 text-2xl font-bold">Brand Name</div>
+        <div className="p-4 text-lg md:text-2xl font-bold">Brand Name</div>
       )}
       <ul className="flex-1 mt-4">
         {menuItems.map((item, index) => (
@@ -31,7 +32,7 @@ const Sidebar = () => {
             <li>
               <div
                 className="flex items-center gap-3 px-4 py-3 hover:bg-gray-700 w-full"
-                title={!openSidebare ? item.title : undefined} // tooltip لو مغلق
+                title={!openSidebare ? item.title : undefined} 
               >
                 <span>{item.icon}</span>
                 {openSidebare && <span>{item.title}</span>}

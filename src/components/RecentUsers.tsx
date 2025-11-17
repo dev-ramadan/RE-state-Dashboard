@@ -14,7 +14,7 @@ const RecentUsers = () => {
 
   if (isLoading)
     return (
-      <div className="bg-white p-6 rounded-2xl shadow-md flex justify-center items-center h-48">
+      <div className="bg-white p-6 rounded-2xl shadow-md flex justify-center items-center h-auto">
         <span className="text-gray-500 animate-pulse">Loading users...</span>
       </div>
     );
