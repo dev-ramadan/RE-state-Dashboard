@@ -14,7 +14,7 @@ const Home = () => {
           <Card numbers="284" cardName="Comments" icon={<Text />} />
           <Card numbers="$7,842" cardName="Earning" icon={<DollarSign />} />
         </div>
-        <div className="p-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="p-4 grid grid-cols-1 lg:grid-cols-2 gap-4 mx-auto">
           
           <RecentOrders />
           <RecentProperty/>
