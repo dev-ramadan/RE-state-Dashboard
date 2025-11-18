@@ -1,6 +1,3 @@
-
-import { Eye, ShoppingCart, DollarSign, Text } from "lucide-react";
-import Card from "../UI/Card";
 import RecentOrders from "../components/RecentUsers";
 import RecentProperty from "../components/RecentProperty";
 import PropertyTypeChart from "../components/PropertyTypeChart";
