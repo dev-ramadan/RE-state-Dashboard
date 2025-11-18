@@ -16,8 +16,8 @@ export const UsersApi = createApi({
     }),
     tagTypes: ["Users"],
     endpoints: (builder) => ({
-        getCustomers: builder.query<Users[], void>({
-            query: () => "user",
+        getCustomers: builder.query<Users[], any>({
+            query: ({pageNumber,pageSize}) => `user?PageSize=${pageSize ?? ""}&PageNumber=${pageNumber ??""}`,
             transformResponse: (response: { isSuccess: boolean; message: string; data: { items: Users[] } }) => {
                 return response.data.items
             },

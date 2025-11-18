@@ -1,50 +1,54 @@
-import { Outlet, useNavigate } from "react-router"
-import Topbar from "../components/Topbar"
-import Sidebar from "../components/Sidebar"
-import { useContext, useEffect } from "react"
-import { isAdmin } from "../Utils/CheckIsAdmin"
-import { OureContext } from "../context/globale"
-
+import { Outlet, useNavigate } from "react-router";
+import Topbar from "../components/Topbar";
+import Sidebar from "../components/Sidebar";
+import { useContext, useEffect } from "react";
+import { OureContext } from "../context/globale";
+import { isTokenExpired } from "../Utils/tokenExpired";
 
 const Layout = () => {
-    const navigate = useNavigate()
-    const token = localStorage.getItem("token")
-    const role = isAdmin();
+  const navigate = useNavigate();
+  const context = useContext(OureContext);
+  if (!context) throw new Error("OureContext is undefined");
+  const { setIslogin } = context;
 
-    const context = useContext(OureContext);
-if (!context) {
-  throw new Error("Topbar must be used within OureProvider");
-}
-
-const { setIslogin } = context;
-
-useEffect(() => {
-  const interval = setInterval(() => {
+  const logoutUser = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("login");
     setIslogin(false);
-    navigate("/login");
-  }, 19 * 60 * 1000);
-
-  return () => clearInterval(interval);
-}, []);
+    navigate("/login", { replace: true });
+  };
 
   useEffect(() => {
-    if (!token || role !== "ADMIN") {
-      navigate("/login");
+    if (isTokenExpired()) {
+      logoutUser();
+      return;
     }
-  }, [token, role, navigate]);
 
-  if (!token || role !== "ADMIN") return null;
-    return (
-        <div className="flex h-screen relative">
-            <Sidebar />
-            <div className="flex-1 flex flex-col">
-                <Topbar />
-                <div className="p-6 flex-1 overflow-auto">
-                    <Outlet />
-                </div>
-            </div>
+    const interval = setInterval(() => {
+      if (isTokenExpired()) {
+        logoutUser();
+      }
+    }, 10_000);
+
+    return () => clearInterval(interval);
+  }, [navigate, setIslogin]);
+
+  if (isTokenExpired()) {
+    logoutUser();
+    return null;
+  }
+
+  return (
+    <div className="flex h-screen relative">
+      <Sidebar />
+      <div className="flex-1 flex flex-col">
+        <Topbar />
+        <div className="p-6 flex-1 overflow-auto bg-gray-50">
+          <Outlet />
         </div>
-    )
-}
-export default Layout
+      </div>
+    </div>
+  );
+};
+
+export default Layout;

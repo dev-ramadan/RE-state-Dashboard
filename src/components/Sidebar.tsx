@@ -1,4 +1,4 @@
-import { HomeIcon, User, LogOut, User2, UserCircle2, HouseHeartIcon } from "lucide-react";
+import { HomeIcon, User, LogOut, User2, UserCircle2, HouseHeartIcon, ChartColumnIcon } from "lucide-react";
 import { useContext } from "react";
 import { NavLink } from "react-router";
 import { OureContext } from "../context/globale";
@@ -14,7 +14,8 @@ const Sidebar = () => {
     { icon: <UserCircle2 />, title: "Agent", link: "/agent" },
     { icon: <User />, title: "Broker", link: "/broker" },
     { icon: <HouseHeartIcon />, title: "Property", link: "/property" },
-    { icon: <LogOut />, title: "Sign Out", link: "/" },
+    { icon: <ChartColumnIcon />, title: "Analytics", link: "/analytics" },
+    { icon: <LogOut onClick={()=>localStorage.removeItem("token")}/>, title: "Sign Out",link:'/' },
   ];
 
   return (

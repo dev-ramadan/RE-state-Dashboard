@@ -4,6 +4,7 @@ import { useLoginMutation } from "../Redux/api/AdminLogin";
 import { isAdmin } from "../Utils/CheckIsAdmin";
 import { useNavigate } from "react-router";
 import { OureContext } from "../context/globale";
+import { Loader } from "lucide-react";
 
 const Login = () => {
   const [form, setForm] = useState({ userName: "", password: "" });
@@ -11,11 +12,12 @@ const Login = () => {
   const [adminAllowed, setAdminAllowed] = useState(true);
   const [login] = useLoginMutation();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false)
 
   const context = useContext(OureContext);
   if (!context) throw new Error("Login context undefined");
 
-  const { setIslogin } = context;
+  const { setIslogin, setUserId } = context;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -23,14 +25,18 @@ const Login = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    setValidation("");      
+    setAdminAllowed(true);    
 
     try {
       const res = await login(form).unwrap();
 
-      // Save token
+      // حفظ التوكن والـ userId
       localStorage.setItem("token", res.data.jwtToken);
+      setUserId(res.data.userId);
 
-      // Check role
+      // فحص الرول
       const role = isAdmin();
 
       if (role === "ADMIN") {
@@ -38,12 +44,24 @@ const Login = () => {
         localStorage.setItem("login", "true");
         navigate("/");
       } else {
+        localStorage.removeItem("token");  
+        localStorage.removeItem("login");
         setAdminAllowed(false);
-        setValidation("You can't access the dashboard");
+        setValidation("You don't have admin privileges to access the dashboard");
       }
-    } catch (err) {
+    } catch (err: any) {
       console.log(err);
-      setValidation("Invalid username or password");
+
+      let errorMsg = "Invalid username or password";
+
+      if (err?.data?.message) {
+        errorMsg = err.data.message;
+      }
+
+      setValidation(errorMsg);
+      setAdminAllowed(false);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -91,14 +109,18 @@ const Login = () => {
             whileTap={{ scale: 0.95 }}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold shadow-lg duration-200"
           >
-            Login
+            {loading ? <Loader className="animate-spin mx-auto" size={15} /> : "Login"}
           </motion.button>
         </form>
 
         {!adminAllowed && (
-          <p className="text-red-500 font-mono text-center mt-5">
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-red-400 font-medium text-center mt-5 bg-red-900/30 px-4 py-2 rounded-lg"
+          >
             {validation}
-          </p>
+          </motion.p>
         )}
       </motion.div>
     </div>

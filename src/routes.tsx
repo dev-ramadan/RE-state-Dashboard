@@ -9,19 +9,22 @@ import Login from "./Pages/Login";
 import UserDetails from "./Pages/UserDetails";
 import Properties from "./Pages/Property";
 import PropertyDetails from "./Pages/PropertyDetails";
+import Analytics from "./Pages/Analytics";
 
 
 export const route = createBrowserRouter(createRoutesFromElements(
     <>
-            <Route path="/" element={<Layout />}>
-                <Route index element={<Home />}></Route>
-                <Route path="customer" element={<Customers />}></Route>
-                <Route path="agent" element={<Agent />}></Route>
-                <Route path="broker" element={<Broker />}></Route>
-                <Route path="property" element={<Properties />}></Route>
-                <Route path="userDetails/:id" element={<UserDetails/>}></Route>
-                <Route path="propertyDetails/:id" element={<PropertyDetails/>}></Route>
-            </Route>
         <Route path="login" element={<Login />}></Route>
+
+        <Route path="/" element={<Layout />}>
+            <Route index element={<Home />}></Route>
+            <Route path="customer" element={<Customers />}></Route>
+            <Route path="agent" element={<Agent />}></Route>
+            <Route path="broker" element={<Broker />}></Route>
+            <Route path="property" element={<Properties />}></Route>
+            <Route path="analytics" element={<Analytics />}></Route>
+            <Route path="userDetails/:id" element={<UserDetails />}></Route>
+            <Route path="propertyDetails/:id" element={<PropertyDetails />}></Route>
+        </Route>
     </>
 ))

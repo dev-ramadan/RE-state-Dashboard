@@ -1,17 +1,19 @@
 import { useDeleteUserMutation, useGetCustomersQuery } from "../Redux/api/Users";
-import { Trash2, Edit, Info } from "lucide-react";
+import { Trash2, Edit, Info, ArrowBigLeftDash, ArrowBigRightDash } from "lucide-react";
+import { useState } from "react";
 import { Link } from "react-router";
 
 interface IProps { }
 
 const Customers = ({ }: IProps) => {
-  const { data: users, isError, isLoading } = useGetCustomersQuery();
+  const [pageNumber, setPageNumber] = useState(1);
+  const pageSize = 8;
+  const { data: users, isError, isLoading } = useGetCustomersQuery({ pageNumber, pageSize });
   const [deleteUser] = useDeleteUserMutation()
-  console.log(users);
-  
+
   const handleDelete = async (id: string) => {
     try {
-       await deleteUser(id).unwrap();
+      await deleteUser(id).unwrap();
     } catch (err) {
       console.error("Failed to delete broker:", err);
     }
@@ -78,6 +80,23 @@ const Customers = ({ }: IProps) => {
             ))}
           </tbody>
         </table>
+        <div className="flex justify-center items-center gap-3 mx-auto my-12">
+          <button
+            onClick={() => setPageNumber(prev => Math.max(prev - 1, 1))}
+            disabled={pageNumber === 1}
+            className="disabled:opacity-50 px-3 py-2 rounded-full bg-gray-200 hover:bg-gray-300 transition"
+          >
+            <ArrowBigLeftDash />
+          </button>
+          <span className="px-4 py-2 font-medium">{pageNumber}</span>
+          <button
+            onClick={() => setPageNumber(prev => prev + 1)}
+            disabled={users?.length! < pageSize}
+            className="disabled:opacity-50 px-3 py-2 rounded-full bg-gray-200 hover:bg-gray-300 transition"
+          >
+            <ArrowBigRightDash />
+          </button>
+        </div>
       </div>
 
       {/* Card view for smaller screens */}

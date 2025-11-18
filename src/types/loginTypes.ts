@@ -8,6 +8,7 @@ export type ILoginResponse = {
   message: string;
   data: {
     jwtToken: string;
+      userId: string;
     user: {
       userId: string;
       userName: string;

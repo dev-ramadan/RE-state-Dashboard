@@ -24,7 +24,8 @@ const Properties = () => {
   });
 
   const allProperty: (CommercialProperties | ResidentialProperties)[] = [...residentialProperties, ...commercialProperties];
-
+  console.log(allProperty);
+  
   useEffect(() => {
     setPageNumber(1);
   }, [ city, address, filterProperty]);
