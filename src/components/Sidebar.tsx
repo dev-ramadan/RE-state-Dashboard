@@ -7,6 +7,7 @@ import {
   HouseHeartIcon,
   ChartColumnIcon,
   X,
+  Home,
 } from "lucide-react";
 import { useContext } from "react";
 import { NavLink } from "react-router";
@@ -33,12 +34,12 @@ const Sidebar = () => {
     <div
       className={`absolute top-0 left-0 h-screen bg-gray-900 text-white 
         flex flex-col transition-all duration-300 overflow-hidden shadow-xl
-        ${openSidebare ? "w-64 z-50" : "w-0 -z-20"}
+        ${openSidebare ? "w-44 md:w-64 z-50" : "w-0 -z-20"}
       `}
     >
       {openSidebare && (
         <div className="p-5 text-xl font-extrabold tracking-wide select-none flex justify-between items-center">
-          <span>Brand Name</span> <span onClick={handleCloseSidebar} className="cursor-pointer"><X/></span>
+          <span className="flex items-center gap-1 text-lg md:text-2xl"><Home/> ESTATE </span> <span onClick={handleCloseSidebar} className="cursor-pointer"><X/></span>
         </div>
       )}
 
