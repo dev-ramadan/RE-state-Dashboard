@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Heart, MapPin, Trash2, Edit3, Save, X } from "lucide-react";
-import { Navigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import { useState, useEffect } from "react";
 
 import {
