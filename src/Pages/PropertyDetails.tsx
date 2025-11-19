@@ -148,10 +148,13 @@ const PropertyDetails = () => {
     };
 
     return (
-        <div className="max-w-6xl mx-auto px-4 py-10 space-y-10">
+        <div className="max-w-6xl mx-auto px-4 py-10 space-y-10 ">
 
             {/* IMAGE SLIDER */}
-            <PropertyImageSlider images={property.galleries || []} />
+            <div className="mx-auto w-full max-w-[295px] sm:max-w-[500px] md:max-w-[700px] lg:max-w-full  rounded-xl overflow-hidden shadow-lg">
+                <PropertyImageSlider images={property.galleries || []} />
+            </div>
+
 
             {/* HEADER */}
             <motion.div
