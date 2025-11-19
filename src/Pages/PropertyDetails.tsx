@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
-import { Heart, MapPin } from "lucide-react";
+import { Heart, MapPin, Trash2, Edit3, Save, X } from "lucide-react";
 import { Navigate, useParams } from "react-router";
 import { useState, useEffect } from "react";
+
 import {
     useDeleteCommercialPropertyMutation,
     useDeleteResidentialPropertiesMutation,
@@ -24,9 +25,8 @@ const PropertyDetails = () => {
 
     const [updateCommercialProperty] = useUpdateCommercialPropertyMutation();
     const [updateResidentialProperties] = useUpdateResidentialPropertiesMutation();
-    const [deleteCommercialProperty] = useDeleteCommercialPropertyMutation()
-    const [deleteResidentialProperties] = useDeleteResidentialPropertiesMutation()
-
+    const [deleteCommercialProperty] = useDeleteCommercialPropertyMutation();
+    const [deleteResidentialProperties] = useDeleteResidentialPropertiesMutation();
 
     useEffect(() => {
         if (property) setFormData(property);
@@ -49,203 +49,208 @@ const PropertyDetails = () => {
     };
 
     const renderField = (label: string, path: string, value: any) => {
-        if (value === null || value === undefined) return null;
+        if (value == null) return null;
 
-        // string
+        const FieldWrapper = ({ children }: any) => (
+            <div className="bg-gray-50 p-4 rounded-xl shadow-sm border">
+                <p className="text-gray-700 font-semibold mb-1">{label}</p>
+                {children}
+            </div>
+        );
+
+        // STRING
         if (typeof value === "string") {
-            return isEditing ? (
-                <p key={path} className="mb-2">
-                    <span className="font-semibold">{label}:</span>{" "}
-                    <input
-                        type="text"
-                        value={value}
-                        onChange={(e) => handleChange(path, e.target.value)}
-                        className="border rounded p-1 w-full"
-                    />
-                </p>
-            ) : (
-                <p key={path} className="mb-2">
-                    <span className="font-semibold">{label}:</span> {value}
-                </p>
+            return (
+                <FieldWrapper key={path}>
+                    {isEditing ? (
+                        <input
+                            type="text"
+                            value={value}
+                            onChange={(e) => handleChange(path, e.target.value)}
+                            className="border rounded-md p-2 w-full"
+                        />
+                    ) : (
+                        <p className="text-gray-800">{value}</p>
+                    )}
+                </FieldWrapper>
             );
         }
 
-        // number
+        // NUMBER
         if (typeof value === "number") {
-            return isEditing ? (
-                <p key={path} className="mb-2">
-                    <span className="font-semibold">{label}:</span>{" "}
-                    <input
-                        type="number"
-                        value={value}
-                        onChange={(e) => handleChange(path, Number(e.target.value))}
-                        className="border rounded p-1 w-32"
-                    />
-                </p>
-            ) : (
-                <p key={path} className="mb-2">
-                    <span className="font-semibold">{label}:</span> {value}
-                </p>
+            return (
+                <FieldWrapper key={path}>
+                    {isEditing ? (
+                        <input
+                            type="number"
+                            value={value}
+                            onChange={(e) => handleChange(path, Number(e.target.value))}
+                            className="border rounded-md p-2 w-full"
+                        />
+                    ) : (
+                        <p className="text-gray-800">{value}</p>
+                    )}
+                </FieldWrapper>
             );
         }
 
-        // boolean
+        // BOOLEAN
         if (typeof value === "boolean") {
-            return isEditing ? (
-                <p key={path} className="mb-2 flex items-center gap-2">
-                    <span className="font-semibold">{label}:</span>
-                    <input
-                        type="checkbox"
-                        checked={value}
-                        onChange={(e) => handleChange(path, e.target.checked)}
-                    />
-                </p>
-            ) : (
-                <p key={path} className="mb-2">
-                    <span className="font-semibold">{label}:</span> {value ? "Yes" : "No"}
-                </p>
+            return (
+                <FieldWrapper key={path}>
+                    {isEditing ? (
+                        <input
+                            type="checkbox"
+                            checked={value}
+                            onChange={(e) => handleChange(path, e.target.checked)}
+                        />
+                    ) : (
+                        <p>{value ? "Yes" : "No"}</p>
+                    )}
+                </FieldWrapper>
             );
         }
 
-        // object
+        // OBJECT
         if (typeof value === "object" && !Array.isArray(value)) {
             return (
-                <div key={path} className="pl-4 border-l border-gray-300 mb-4">
-                    <p className="font-semibold mb-2">{label}:</p>
-                    {Object.keys(value).map((key) =>
-                        renderField(
-                            key.charAt(0).toUpperCase() + key.slice(1),
-                            `${path}.${key}`,
-                            value[key]
-                        )
-                    )}
+                <div key={path} className="col-span-2 bg-gray-50 p-4 rounded-xl shadow-sm border">
+                    <p className="font-bold text-gray-700 mb-2">{label}</p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {Object.keys(value).map((key) =>
+                            renderField(
+                                key.charAt(0).toUpperCase() + key.slice(1),
+                                `${path}.${key}`,
+                                value[key]
+                            )
+                        )}
+                    </div>
                 </div>
             );
         }
-
-        return null;
     };
 
     const handleSave = async () => {
         try {
-            if (commercial) await updateCommercialProperty({ id: commercial.propertyId, body: formData });
-            else if (residential) await updateResidentialProperties({ id: residential.propertyId, body: formData });
+            if (commercial)
+                await updateCommercialProperty({ id: commercial.propertyId, body: formData });
+            else if (residential)
+                await updateResidentialProperties({ id: residential.propertyId, body: formData });
+
             setIsEditing(false);
-            alert("Updated successfully!");
         } catch (err) {
-            console.error(err);
             alert("Update failed!");
         }
     };
 
     const handleDelete = async (id: string) => {
         try {
-            if (commercial) {
-                await deleteCommercialProperty(id)
-            }
-            else if (residential) {
-                await deleteResidentialProperties(id)
-            }
-            <Navigate to={'/property'} replace/>
-        } catch (err) {
-            console.log(err);
-
-        }
-    }
+            if (commercial) await deleteCommercialProperty(id);
+            else if (residential) await deleteResidentialProperties(id);
+        } catch (err) {}
+    };
 
     return (
-        <div className="max-w-6xl mx-auto px-4 py-8 space-y-8">
+        <div className="max-w-6xl mx-auto px-4 py-10 space-y-10">
 
-            {/* Buttons */}
-            <div className="flex gap-3 justify-end">
-                <button
-                    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-                    onClick={() => setIsEditing(!isEditing)}
-                >
-                    {isEditing ? "Cancel" : "Edit"}
-                </button>
-                {isEditing && (
-                    <button
-                        className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
-                        onClick={handleSave}
-                    >
-                        Save
-                    </button>
-                )}
-            </div>
-
-            {/* Title & Location */}
+            {/* HEADER */}
             <motion.div
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-white shadow rounded-xl p-6"
+                className="bg-white shadow-lg rounded-2xl p-8"
             >
-                <h1 className="text-3xl md:text-4xl font-bold mb-2">
-                    {isEditing ? (
-                        <input
-                            type="text"
-                            value={formData.title}
-                            onChange={(e) => handleChange("title", e.target.value)}
-                            className="border rounded p-1 w-full text-2xl"
-                        />
-                    ) : (
-                        formData.title
-                    )}
-                </h1>
-                <p className="flex items-center gap-2 text-gray-600">
-                    <MapPin className="w-5 h-5" />
-                    {isEditing ? (
-                        <>
-                            <input
-                                type="text"
-                                value={formData.city}
-                                onChange={(e) => handleChange("city", e.target.value)}
-                                className="border rounded p-1 w-32"
-                            />,{" "}
-                            <input
-                                type="text"
-                                value={formData.address}
-                                onChange={(e) => handleChange("address", e.target.value)}
-                                className="border rounded p-1 w-48"
-                            />
-                        </>
-                    ) : (
-                        `${formData.city}, ${formData.address}`
-                    )}
-                </p>
+                <div className="flex justify-between items-start">
+                    <div>
+                        <h1 className="text-3xl font-bold">{formData.title}</h1>
+                        <p className="text-gray-600 flex gap-2 items-center mt-2">
+                            <MapPin className="w-5 h-5 text-red-500" />
+                            {formData.city}, {formData.address}
+                        </p>
+                    </div>
+
+                    <div className="flex gap-3">
+                        {!isEditing ? (
+                            <button
+                                onClick={() => setIsEditing(true)}
+                                className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+                            >
+                                <Edit3 size={18} /> Edit
+                            </button>
+                        ) : (
+                            <>
+                                <button
+                                    onClick={handleSave}
+                                    className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+                                >
+                                    <Save size={18} /> Save
+                                </button>
+                                <button
+                                    onClick={() => setIsEditing(false)}
+                                    className="flex items-center gap-2 bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500"
+                                >
+                                    <X size={18} /> Cancel
+                                </button>
+                            </>
+                        )}
+                    </div>
+                </div>
             </motion.div>
 
-            {/* Details Card */}
-            <div className="bg-white shadow rounded-xl p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* DETAILS */}
+            <div className="bg-white shadow-lg rounded-2xl p-8 grid grid-cols-1 md:grid-cols-2 gap-6">
                 {Object.keys(formData).map((key) => {
                     if (Array.isArray(formData[key])) return null;
                     if (key === "comments" || key === "likesCount" || key === "isLiked") return null;
-                    return renderField(key.charAt(0).toUpperCase() + key.slice(1), key, formData[key]);
+
+                    return renderField(
+                        key.charAt(0).toUpperCase() + key.slice(1),
+                        key,
+                        formData[key]
+                    );
                 })}
             </div>
 
-            {/* Comments */}
-            <div className="bg-white shadow rounded-xl p-6">
-                <h2 className="text-2xl font-bold mb-4">Comments</h2>
+            {/* COMMENTS */}
+            <div className="bg-white shadow-lg rounded-2xl p-8">
+                <h2 className="text-2xl font-semibold mb-6">Comments</h2>
+
                 {property.comments?.length === 0 ? (
                     <p className="text-gray-500">No comments yet.</p>
                 ) : (
-                    property.comments.map((comment: any) => (
-                        <div key={comment.commentId} className="border-b last:border-none pb-3 mb-3">
-                            <p className="font-medium">{comment.commentText}</p>
-                            <p className="text-sm text-gray-600">{comment.dateComment}</p>
-                            <p className="text-sm font-semibold mt-1">Likes: {comment.likesCount}</p>
-                        </div>
-                    ))
+                    <div className="space-y-4">
+                        {property.comments.map((comment: any) => (
+                            <div
+                                key={comment.commentId}
+                                className="bg-gray-50 p-4 rounded-xl shadow border"
+                            >
+                                <p className="font-medium text-gray-800">{comment.commentText}</p>
+                                <p className="text-sm text-gray-600 mt-1">{comment.dateComment}</p>
+                                <p className="text-sm text-gray-700 mt-1">
+                                    Likes: {comment.likesCount}
+                                </p>
+                            </div>
+                        ))}
+                    </div>
                 )}
             </div>
 
-            {/* Likes */}
-            <div className="flex items-center gap-2 text-red-600 text-xl font-bold">
-                <Heart className={property.isLiked ? "fill-red-600" : ""} />
-                {property.likesCount} Likes
+            {/* LIKES + DELETE */}
+            <div className="flex items-center justify-between bg-white p-6 rounded-2xl shadow-lg">
+                <div className="flex items-center gap-2 text-red-600 text-xl font-bold">
+                    <Heart
+                        className={property.isLiked ? "fill-red-600" : ""}
+                        size={28}
+                    />
+                    {property.likesCount} Likes
+                </div>
+
+                <button
+                    onClick={() => handleDelete(property.propertyId)}
+                    className="flex items-center gap-2 bg-red-600 text-white px-5 py-3 rounded-lg hover:bg-red-700"
+                >
+                    <Trash2 size={20} /> Delete Property
+                </button>
             </div>
-            <button className="w-full bg-red-500 text-white p-2 rounded-md" onClick={()=>handleDelete(property.propertyId)}>Delete Property</button>
         </div>
     );
 };
