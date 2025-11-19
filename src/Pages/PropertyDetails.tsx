@@ -11,6 +11,7 @@ import {
     useUpdateCommercialPropertyMutation,
     useUpdateResidentialPropertiesMutation
 } from "../Redux/api/Property";
+import PropertyImageSlider from "../UI/PropertyImageSlider";
 
 const PropertyDetails = () => {
     const { id } = useParams();
@@ -52,13 +53,12 @@ const PropertyDetails = () => {
         if (value == null) return null;
 
         const FieldWrapper = ({ children }: any) => (
-            <div className="bg-gray-50 p-4 rounded-xl shadow-sm border">
+            <div className="bg-white p-4 rounded-xl shadow hover:shadow-md transition">
                 <p className="text-gray-700 font-semibold mb-1">{label}</p>
                 {children}
             </div>
         );
 
-        // STRING
         if (typeof value === "string") {
             return (
                 <FieldWrapper key={path}>
@@ -67,7 +67,7 @@ const PropertyDetails = () => {
                             type="text"
                             value={value}
                             onChange={(e) => handleChange(path, e.target.value)}
-                            className="border rounded-md p-2 w-full"
+                            className="rounded-md p-2 w-full"
                         />
                     ) : (
                         <p className="text-gray-800">{value}</p>
@@ -76,7 +76,6 @@ const PropertyDetails = () => {
             );
         }
 
-        // NUMBER
         if (typeof value === "number") {
             return (
                 <FieldWrapper key={path}>
@@ -94,7 +93,6 @@ const PropertyDetails = () => {
             );
         }
 
-        // BOOLEAN
         if (typeof value === "boolean") {
             return (
                 <FieldWrapper key={path}>
@@ -111,12 +109,11 @@ const PropertyDetails = () => {
             );
         }
 
-        // OBJECT
         if (typeof value === "object" && !Array.isArray(value)) {
             return (
-                <div key={path} className="col-span-2 bg-gray-50 p-4 rounded-xl shadow-sm border">
-                    <p className="font-bold text-gray-700 mb-2">{label}</p>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div key={path} className="col-span-1 md:col-span-2 bg-white p-5 rounded-xl shadow border">
+                    <p className="font-bold text-gray-700 mb-3 text-lg">{label}</p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {Object.keys(value).map((key) =>
                             renderField(
                                 key.charAt(0).toUpperCase() + key.slice(1),
@@ -138,7 +135,7 @@ const PropertyDetails = () => {
                 await updateResidentialProperties({ id: residential.propertyId, body: formData });
 
             setIsEditing(false);
-        } catch (err) {
+        } catch {
             alert("Update failed!");
         }
     };
@@ -147,19 +144,22 @@ const PropertyDetails = () => {
         try {
             if (commercial) await deleteCommercialProperty(id);
             else if (residential) await deleteResidentialProperties(id);
-        } catch (err) {}
+        } catch { }
     };
 
     return (
         <div className="max-w-6xl mx-auto px-4 py-10 space-y-10">
 
+            {/* IMAGE SLIDER */}
+            <PropertyImageSlider images={property.galleries || []} />
+
             {/* HEADER */}
             <motion.div
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-white shadow-lg rounded-2xl p-8"
+                className="bg-white shadow-xl rounded-2xl p-8 border"
             >
-                <div className="flex justify-between items-start">
+                <div className="flex flex-col md:flex-row justify-between gap-6 items-start">
                     <div>
                         <h1 className="text-3xl font-bold">{formData.title}</h1>
                         <p className="text-gray-600 flex gap-2 items-center mt-2">
@@ -172,7 +172,7 @@ const PropertyDetails = () => {
                         {!isEditing ? (
                             <button
                                 onClick={() => setIsEditing(true)}
-                                className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+                                className="flex items-center gap-2 bg-blue-600 text-white px-5 py-3 rounded-xl hover:bg-blue-700 transition"
                             >
                                 <Edit3 size={18} /> Edit
                             </button>
@@ -180,13 +180,13 @@ const PropertyDetails = () => {
                             <>
                                 <button
                                     onClick={handleSave}
-                                    className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+                                    className="flex items-center gap-2 bg-green-600 text-white px-5 py-3 rounded-xl hover:bg-green-700 transition"
                                 >
                                     <Save size={18} /> Save
                                 </button>
                                 <button
                                     onClick={() => setIsEditing(false)}
-                                    className="flex items-center gap-2 bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500"
+                                    className="flex items-center gap-2 bg-gray-500 text-white px-5 py-3 rounded-xl hover:bg-gray-600 transition"
                                 >
                                     <X size={18} /> Cancel
                                 </button>
@@ -197,7 +197,7 @@ const PropertyDetails = () => {
             </motion.div>
 
             {/* DETAILS */}
-            <div className="bg-white shadow-lg rounded-2xl p-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-gray-50 shadow-lg rounded-2xl p-8 grid grid-cols-1 md:grid-cols-2 gap-6 border">
                 {Object.keys(formData).map((key) => {
                     if (Array.isArray(formData[key])) return null;
                     if (key === "comments" || key === "likesCount" || key === "isLiked") return null;
@@ -211,7 +211,7 @@ const PropertyDetails = () => {
             </div>
 
             {/* COMMENTS */}
-            <div className="bg-white shadow-lg rounded-2xl p-8">
+            <div className="bg-white shadow-lg rounded-2xl p-8 border">
                 <h2 className="text-2xl font-semibold mb-6">Comments</h2>
 
                 {property.comments?.length === 0 ? (
@@ -221,7 +221,7 @@ const PropertyDetails = () => {
                         {property.comments.map((comment: any) => (
                             <div
                                 key={comment.commentId}
-                                className="bg-gray-50 p-4 rounded-xl shadow border"
+                                className="bg-gray-50 p-4 rounded-xl shadow border hover:shadow-md transition"
                             >
                                 <p className="font-medium text-gray-800">{comment.commentText}</p>
                                 <p className="text-sm text-gray-600 mt-1">{comment.dateComment}</p>
@@ -234,19 +234,16 @@ const PropertyDetails = () => {
                 )}
             </div>
 
-            {/* LIKES + DELETE */}
-            <div className="flex items-center justify-between bg-white p-6 rounded-2xl shadow-lg">
+            {/* FOOTER */}
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4 bg-white p-6 rounded-2xl shadow-lg border">
                 <div className="flex items-center gap-2 text-red-600 text-xl font-bold">
-                    <Heart
-                        className={property.isLiked ? "fill-red-600" : ""}
-                        size={28}
-                    />
+                    <Heart className={property.isLiked ? "fill-red-600" : ""} size={28} />
                     {property.likesCount} Likes
                 </div>
 
                 <button
                     onClick={() => handleDelete(property.propertyId)}
-                    className="flex items-center gap-2 bg-red-600 text-white px-5 py-3 rounded-lg hover:bg-red-700"
+                    className="flex items-center gap-2 bg-red-600 text-white px-5 py-3 rounded-xl hover:bg-red-700 transition"
                 >
                     <Trash2 size={20} /> Delete Property
                 </button>

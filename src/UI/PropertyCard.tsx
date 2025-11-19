@@ -1,10 +1,11 @@
 import { motion } from "framer-motion";
-import type { CommercialProperties, ResidentialProperties } from "../types/property";
+import type { CommercialProperties, GalleryImage, ResidentialProperties } from "../types/property";
 import { Link } from "react-router";
 type EstateCardProps = {
     property: CommercialProperties | ResidentialProperties;
+    images:GalleryImage[]
 };
-export default function EstateCard({ property }: EstateCardProps) {
+export default function EstateCard({ property , images }: EstateCardProps) {   
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -16,8 +17,9 @@ export default function EstateCard({ property }: EstateCardProps) {
                 <div className="relative h-48 bg-gray-200">
                     {property?.galleries?.length > 0 ? (
                         <img
-                            src={property.galleries[0].imageUrl}
+                            src={import.meta.env.VITE_IMAGE_URL + images[0].imageUrl}
                             alt={property.title}
+                            loading="lazy"
                             className="w-full h-full object-cover"
                         />
                     ) : (

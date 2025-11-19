@@ -24,7 +24,6 @@ const Properties = () => {
   });
 
   const allProperty: (CommercialProperties | ResidentialProperties)[] = [...residentialProperties, ...commercialProperties];
-  console.log(allProperty);
   
   useEffect(() => {
     setPageNumber(1);
@@ -98,7 +97,7 @@ const Properties = () => {
                 variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } }}
                 whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}
               >
-                <EstateCard property={property} />
+                <EstateCard property={property} images={property.galleries}/>
               </motion.div>
             ))}
           </motion.div>
