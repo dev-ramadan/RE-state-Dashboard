@@ -1,6 +1,7 @@
+import React from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 
-export default function LikesChart({ data }: any) {
+const LikesChart = ({ data }: any) => {
   return (
     <div className="bg-white shadow rounded-xl p-5">
       <h2 className="text-lg font-semibold mb-3">Most Liked Properties</h2>
@@ -17,3 +18,5 @@ export default function LikesChart({ data }: any) {
     </div>
   );
 }
+export default React.memo(LikesChart);
+

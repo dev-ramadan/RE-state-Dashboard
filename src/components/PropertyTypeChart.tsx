@@ -1,6 +1,7 @@
+import React from "react";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 
-export default function PropertyTypeChart({data}:any) {
+const PropertyTypeChart = ({data}:any) => {
 
 
   const COLORS = ["#6366F1", "#10B981"];
@@ -22,3 +23,5 @@ export default function PropertyTypeChart({data}:any) {
     </div>
   );
 }
+export default React.memo(PropertyTypeChart);
+

@@ -1,6 +1,7 @@
+import React from "react";
 import { PieChart, Pie, Tooltip, ResponsiveContainer } from "recharts";
 
-export default function PurposeChart({ data }: any) {
+const PurposeChart = ({ data }: any) => {
   return (
     <div className="bg-white shadow rounded-xl p-5">
       <h2 className="text-lg font-semibold mb-3">Sale vs Rent</h2>
@@ -21,3 +22,4 @@ export default function PurposeChart({ data }: any) {
     </div>
   );
 }
+export default React.memo(PurposeChart);

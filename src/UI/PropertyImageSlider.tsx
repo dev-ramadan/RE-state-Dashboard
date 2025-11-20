@@ -1,3 +1,4 @@
+import React from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
@@ -50,6 +51,7 @@ const PropertyImageSlider: React.FC<PropertyImageSliderProps> = ({ images }) => 
             src={import.meta.env.VITE_IMAGE_URL + img.imageUrl}
             alt={`Property Image ${index + 1}`}
             className="w-full h-[250px] sm:h-[350px] md:h-[400px] lg:h-[450px] object-cover"
+            loading="lazy"
           />
         ))}
       </Carousel>
@@ -57,4 +59,5 @@ const PropertyImageSlider: React.FC<PropertyImageSliderProps> = ({ images }) => 
   );
 };
 
-export default PropertyImageSlider;
+export default React.memo(PropertyImageSlider);
+;

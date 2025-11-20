@@ -50,6 +50,7 @@ const UserDetails = () => {
                 src={user?.avatar}
                 alt={user?.username}
                 className="w-full h-full object-cover"
+                loading="lazy"
               />
             ) : <User2 size={70} />
             }

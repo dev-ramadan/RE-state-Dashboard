@@ -29,6 +29,8 @@ const PropertyDetails = () => {
     const [deleteCommercialProperty] = useDeleteCommercialPropertyMutation();
     const [deleteResidentialProperties] = useDeleteResidentialPropertiesMutation();
 
+    
+
     useEffect(() => {
         if (property) setFormData(property);
     }, [property]);
