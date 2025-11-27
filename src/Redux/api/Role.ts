@@ -15,8 +15,11 @@ export const RoleApi = createApi({
     }),
     tagTypes: ["Role"],
     endpoints: (builder) => ({
-        getRoles: builder.query({
+        getRoles: builder.query<any[], void>({
             query: () => "Role",
+            transformResponse: (response: { isSuccess: boolean; message: string; data: any[] }) => {
+                return response.data;
+            },
             providesTags: ["Role"]
         }),
         addRole: builder.mutation({
@@ -27,15 +30,24 @@ export const RoleApi = createApi({
             }),
             invalidatesTags: ["Role"]
         }),
-          addUserRole: builder.mutation({
-            query: (role:{userID:string,roleID:string}) => ({
+        addUserRole: builder.mutation({
+            query: (role: { userId: string, roleId: string }) => ({
                 url: "UserRole/assign-user-to-role",
                 method: "POST",
                 body: role
             }),
             invalidatesTags: ["Role"]
-        })
+        }),
+        removeUserRole: builder.mutation({
+            query: (role: { userId: string, roleId: string }) => ({
+                url: "UserRole/remove-user-from-role",
+                method: "DELETE",
+                body: role
+            }),
+            invalidatesTags: ["Role"]
+        }),
+
     })
 });
 
-export const {useAddRoleMutation,useAddUserRoleMutation,useGetRolesQuery} = RoleApi
+export const { useAddRoleMutation, useAddUserRoleMutation, useGetRolesQuery ,useRemoveUserRoleMutation} = RoleApi

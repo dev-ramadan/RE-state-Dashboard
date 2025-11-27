@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import type { CommercialProperties, PropertyPropse, ResidentialProperties } from "../../types/property";
+import type { CommercialProperties, GalleryImage, PropertyPropse, ResidentialProperties } from "../../types/property";
 const baseUrl = import.meta.env.VITE_BASE_URL;
 export interface GetPropertiesArgs {
     pageNumber?: number;
@@ -90,8 +90,13 @@ export const propertyApi = createApi({
                 method: "DELETE"
             }),
             invalidatesTags: ["Property"]
-        })
+        }),
 
+        // property Image
+        getPropertyImage:builder.query<GalleryImage,any>({
+            query:(id)=>`PropertyGallery/${id}`,
+            providesTags:["Property"]
+        }),
     }),
 });
 
@@ -102,4 +107,5 @@ export const { useGetPropertyQuery,
     useDeleteResidentialPropertiesMutation,
     useGetCommercialByIdQuery,
     useGetResidentialByIdQuery,
+    useGetPropertyImageQuery
 } = propertyApi;

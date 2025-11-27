@@ -34,6 +34,7 @@ const Login = () => {
 
       // حفظ التوكن والـ userId
       localStorage.setItem("token", res.data.jwtToken);
+      localStorage.setItem("userId", res.data.userId);
       setUserId(res.data.userId);
 
       // فحص الرول

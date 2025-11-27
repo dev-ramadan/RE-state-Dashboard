@@ -20,3 +20,9 @@ export type Agent = Broker & {
         rating: number,
         experienceYears: number,
 } 
+
+export type UpdateUser = {
+        name:string;
+        email:string;
+        phone:string
+}

@@ -8,6 +8,7 @@ const Home = () => {
   const { typeData, cityData} = usePropertyAnalytics()
   
   return (
+
     <div className="flex h-fit bg-gray-100">
       <div className="flex-1 flex flex-col ">
         <div className="p-4 grid grid-cols-1 lg:grid-cols-2 gap-4">

@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Heart, MapPin, Trash2, Edit3, Save, X } from "lucide-react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useState, useEffect } from "react";
 
 import {
@@ -15,7 +15,7 @@ import PropertyImageSlider from "../UI/PropertyImageSlider";
 
 const PropertyDetails = () => {
     const { id } = useParams();
-
+    const navigate = useNavigate()
     const { data: commercial } = useGetCommercialByIdQuery(id!);
     const { data: residential } = useGetResidentialByIdQuery(id!);
 
@@ -146,6 +146,7 @@ const PropertyDetails = () => {
         try {
             if (commercial) await deleteCommercialProperty(id);
             else if (residential) await deleteResidentialProperties(id);
+            navigate("/property")
         } catch { }
     };
 

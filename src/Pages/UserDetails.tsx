@@ -3,21 +3,33 @@ import { Mail, Phone, MapPin, User2, BoxesIcon, } from "lucide-react";
 import { motion } from "framer-motion";
 import { useGetUserByIdQuery } from "../Redux/api/Users";
 import { getRole } from "../Utils/getUserRole";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import UpdateUserForm from "../UI/UpdateUserForm";
+import { OureContext } from "../context/globale";
+import DeleteUserRole from "../UI/DeleteUserRole";
 
-
+type RolePropse = {
+  roleId:string;
+  roleName:any
+}
 const UserDetails = () => {
   const { id } = useParams<{ id: string }>();
   const { data: userRes, isLoading, isError } = useGetUserByIdQuery(id!);
   const user = userRes?.data
-  const [role, setRole] = useState([])
+  const [role, setRole] = useState<RolePropse[]>([])
+  const context = useContext(OureContext);
+  if (!context) throw new Error("OureContext is undefined");
+  const { roleForm, addRole,setRoleForm, setAddRole } = context;
   useEffect(() => {
     const checkRole = async () => {
       const role = await getRole(id!);
-      setRole(role)
+      setRole(role.roles)
     }
     checkRole()
-  }, [id])
+  }, [id, roleForm,addRole])
+  
+  console.log(role);
+  
 
 
   if (isLoading)
@@ -73,8 +85,8 @@ const UserDetails = () => {
 
               <div className="flex items-center gap-2 text-gray-700">
                 <BoxesIcon className="w-5 h-5 text-indigo-300" />
-                {role.map((item,idx) => (
-                  <span key={idx}>{item}</span>
+                {role.map((item) => (
+                  <span key={item.roleId}>{item.roleName}</span>
                 ))}
               </div>
 
@@ -92,8 +104,21 @@ const UserDetails = () => {
               </p>
             </div>
 
+            <UpdateUserForm id={user.userId} />
+            <DeleteUserRole id={user.userId} />
             <button className="mt-6 px-6 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition-all duration-300">
               Contact Agent
+            </button>
+            <button className="ml-2 mt-6 px-6 py-2 bg-orange-300 text-white rounded-lg shadow hover:bg-orange-600 transition-all duration-300"
+              onClick={() => {
+                setRoleForm(true)
+              }}
+            >
+              Add New Role
+            </button>
+            <button className="ml-2 mt-6 px-6 py-2 bg-red-500 text-white rounded-lg shadow hover:bg-red-600 transition-all duration-300"
+              onClick={() => setAddRole(true)}>
+              Delete Role
             </button>
           </div>
         </div>

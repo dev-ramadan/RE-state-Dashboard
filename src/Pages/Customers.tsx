@@ -9,7 +9,7 @@ const Customers = ({ }: IProps) => {
   const [pageNumber, setPageNumber] = useState(1);
   const pageSize = 8;
   const { data: users, isError, isLoading } = useGetCustomersQuery({ pageNumber, pageSize });
-  const [deleteUser] = useDeleteUserMutation()
+  const [deleteUser] = useDeleteUserMutation();
 
   const handleDelete = async (id: string) => {
     try {

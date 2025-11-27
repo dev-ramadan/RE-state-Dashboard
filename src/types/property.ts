@@ -8,6 +8,10 @@ export type Comment = {
 };
 
 export type GalleryImage = {
+    mediaId: string,
+    propertyId: string,
+    videoUrl: null,
+    uploadedAt: string
     imageId: string;
     imageUrl: string;
 };

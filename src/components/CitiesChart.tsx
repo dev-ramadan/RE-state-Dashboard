@@ -36,7 +36,7 @@ const CitiesChart = ({ data }: any) => {
 
       {/* Chart */}
       <div className="w-full h-72">
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer width="100%" height={300}>
           <BarChart data={data} barCategoryGap={25}>
             <CartesianGrid strokeDasharray="3 3" stroke="#f1f1f1" />
 
