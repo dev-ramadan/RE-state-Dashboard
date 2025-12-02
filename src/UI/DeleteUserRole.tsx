@@ -3,6 +3,7 @@ import { useRemoveUserRoleMutation } from "../Redux/api/Role";
 import { useContext, useEffect, useState } from "react";
 import { OureContext } from "../context/globale";
 import { getRole } from "../Utils/getUserRole";
+import toast from "react-hot-toast";
 
 
 const DeleteUserRole = ({ id }: any) => {
@@ -25,13 +26,24 @@ const DeleteUserRole = ({ id }: any) => {
     const [removeUserRole, { isLoading }] = useRemoveUserRoleMutation();
 
     const handleDeleteRole = async () => {
-        if (!selectedRoleId) return alert("⚠ اختر رول!");
+        if (!selectedRoleId) return toast("⚠  Please Select Role!");
         const body = {
             userId: id,
             roleId: selectedRoleId
         };
-        await removeUserRole(body)
-        setAddRole(false);
+        try {
+            await removeUserRole(body);
+            toast.success('Role Deleted successfully!',
+                {
+                    style: {
+                        borderRadius: '10px',
+                        background: '#333',
+                        color: '#fff',
+                    },
+                }
+            );
+            setAddRole(false);
+        } catch { }
     };
     return (
         <>

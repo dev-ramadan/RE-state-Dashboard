@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useAddUserRoleMutation, useGetRolesQuery } from "../Redux/api/Role";
 import { useContext, useState } from "react";
 import { OureContext } from "../context/globale";
+import toast from "react-hot-toast";
 
 const UpdateUserForm = ({ id }: any) => {
     const [roles, setRoles] = useState({
@@ -13,14 +14,25 @@ const UpdateUserForm = ({ id }: any) => {
     const { roleForm, setRoleForm } = context;
     const [addUserRole] = useAddUserRoleMutation();
 
-    const { data: role ,isLoading} = useGetRolesQuery();
+    const { data: role, isLoading } = useGetRolesQuery();
 
     const handleAddRole = async () => {
-        await addUserRole(roles);
-        setRoleForm(false)
+        try {
+            await addUserRole(roles);
+            toast.success('Role Added successfully!',
+                {
+                    style: {
+                        borderRadius: '10px',
+                        background: '#333',
+                        color: '#fff',
+                    },
+                }
+            );
+            setRoleForm(false)
+        } catch { }
     };
     if (isLoading) return <p>loading...</p>;
-    
+
     return (
         <>
             {

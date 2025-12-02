@@ -1,6 +1,15 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type { Users } from "../../types/usersTypes";
 const BaseUrl = import.meta.env.VITE_BASE_URL;
+export type PaginatedResponse<T> = {
+  items: T[];
+  pageNumber: number;
+  totalCount: number;
+  totalPages: number;
+  hasPrevious: boolean;
+  hasNext: boolean;
+};
+
 export const UsersApi = createApi({
     reducerPath: "UsersApi",
     baseQuery: fetchBaseQuery({
@@ -16,10 +25,10 @@ export const UsersApi = createApi({
     }),
     tagTypes: ["Users"],
     endpoints: (builder) => ({
-        getCustomers: builder.query<Users[], any>({
+        getCustomers: builder.query<PaginatedResponse<Users>, any>({
             query: ({pageNumber,pageSize}) => `user?PageSize=${pageSize ?? ""}&PageNumber=${pageNumber ??""}`,
-            transformResponse: (response: { isSuccess: boolean; message: string; data: { items: Users[] } }) => {
-                return response.data.items
+            transformResponse: (response: { isSuccess: boolean; message: string; data:PaginatedResponse<any> }) => {
+                return response.data
             },
             providesTags: ["Users"],
         }),

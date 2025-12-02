@@ -1,6 +1,7 @@
 import { useDeleteUserMutation, useGetCustomersQuery } from "../Redux/api/Users";
-import { Trash2,Info, ArrowBigLeftDash, ArrowBigRightDash } from "lucide-react";
+import { Trash2, Info, ArrowBigLeftDash, ArrowBigRightDash } from "lucide-react";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { Link } from "react-router";
 
 interface IProps { }
@@ -8,14 +9,26 @@ interface IProps { }
 const Customers = ({ }: IProps) => {
   const [pageNumber, setPageNumber] = useState(1);
   const pageSize = 8;
-  const { data: users, isError, isLoading } = useGetCustomersQuery({ pageNumber, pageSize });
+  const { data, isError, isLoading } = useGetCustomersQuery({ pageNumber, pageSize });
+  const users = data?.items;
+
   const [deleteUser] = useDeleteUserMutation();
 
   const handleDelete = async (id: string) => {
     try {
       await deleteUser(id).unwrap();
+      toast.success('Deleted successfully!',
+        {
+          style: {
+            borderRadius: '10px',
+            background: '#333',
+            color: '#fff',
+          },
+        }
+      );
     } catch (err) {
-      console.error("Failed to delete broker:", err);
+      toast.error("Failed to delete broker")
+      console.error( err);
     }
   };
 
@@ -85,7 +98,7 @@ const Customers = ({ }: IProps) => {
           <span className="px-4 py-2 font-medium">{pageNumber}</span>
           <button
             onClick={() => setPageNumber(prev => prev + 1)}
-            disabled={users?.length! < pageSize}
+            disabled={data?.hasNext == false}
             className="disabled:opacity-50 px-3 py-2 rounded-full bg-gray-200 hover:bg-gray-300 transition"
           >
             <ArrowBigRightDash />

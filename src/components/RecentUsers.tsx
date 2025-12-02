@@ -10,8 +10,8 @@ const columns:Column<Users>[] |any= [
   { key: "phoneNumber", header: "Phone" },
 ];
 const RecentUsers = () => {
-  const { data: users = [], isError, isLoading } = useGetCustomersQuery({pageNumber:1,pageSize:4});
-
+  const { data, isError, isLoading } = useGetCustomersQuery({pageNumber:1,pageSize:4});
+  const users = data?.items;
   if (isLoading)
     return (
       <div className="bg-white p-6 rounded-2xl shadow-md flex justify-center items-center h-auto">

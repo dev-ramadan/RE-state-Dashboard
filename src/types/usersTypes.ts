@@ -1,17 +1,21 @@
-export type Users =Agent& {
+export type Users = Agent & {
         userId: string,
         username: string,
         email: string,
         phoneNumber: string,
         dateJoined: string,
-        avatar?:string
+        avatar?: string
+        hasNext: boolean
+        items: any
 };
 
-export type Broker =  {
+export type Broker = {
         id: string,
         nationalID: string,
         licenseID: string,
-        user:Users
+        user: Users
+        items: any
+
 }
 
 export type Agent = Broker & {
@@ -19,10 +23,10 @@ export type Agent = Broker & {
         taxIdentificationNumber: number,
         rating: number,
         experienceYears: number,
-} 
+}
 
 export type UpdateUser = {
-        name:string;
-        email:string;
-        phone:string
+        name: string;
+        email: string;
+        phone: string
 }

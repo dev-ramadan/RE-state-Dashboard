@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import { useDeleteAgentMutation, useGetAgentQuery } from "../Redux/api/Agent";
 import { Trash2, Info } from "lucide-react";
+import toast from "react-hot-toast";
 
 interface IProps { }
 
@@ -10,10 +11,21 @@ const Agent = ({ }: IProps) => {
 
   const handleDelete = async (id: string) => {
     try {
-      const res = await deleteAgent(id).unwrap();
-      console.log("Deleted successfully:", res);
+      await deleteAgent(id).unwrap();
+      toast('Deleted successfully!',
+        {
+          icon: '👏',
+          style: {
+            borderRadius: '10px',
+            background: '#333',
+            color: '#fff',
+          },
+        }
+      );
     } catch (err) {
-      console.error("Failed to delete agent:", err);
+      toast.error("Failed to delete agent:");
+      console.log(err);
+      
     }
   };
 

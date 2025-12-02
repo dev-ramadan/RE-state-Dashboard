@@ -4,13 +4,13 @@ import React from "react";
 interface Column<T> {
   label: string; 
   key: keyof T; 
-  render?: (item: T) => React.ReactNode; // لو عايز تخصيص
+  render?: (item: T) => React.ReactNode;   
 }
 
 interface Props<T> {
-  data: T[];
+  data: any;
   columns: Column<T>[];
-  maxItems?: number; // عدد العناصر اللي تظهر
+  maxItems?: number; 
   emptyMessage?: string;
 }
 
@@ -26,7 +26,7 @@ export function MobileTable<T extends { [key: string]: any }>({
 
   return (
     <div className="grid gap-4 md:hidden mx-auto">
-      {data.slice(0, maxItems).map((item, index) => (
+      {data.slice(0, maxItems).map((item:any, index:number) => (
         <div
           key={item[columns[0].key] || index}
           className="border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition"

@@ -8,7 +8,7 @@ export interface Column<T> {
 }
 
 interface TableProps<T> {
-  data: T[];
+  data: any;
   columns: Column<T>[];
   sliceCount?: number; 
   noDataMessage?: string;
@@ -36,7 +36,7 @@ export function DesktopTable<T extends { [key: string]: any }>({
         </thead>
         <tbody>
           {rows.length ? (
-            rows.map((row, idx) => (
+            rows.map((row:any, idx:number) => (
               <tr
                 key={row.id || idx}
                 className="border-b last:border-none hover:bg-gray-50 transition"

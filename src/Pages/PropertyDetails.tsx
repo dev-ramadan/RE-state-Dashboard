@@ -12,6 +12,7 @@ import {
     useUpdateResidentialPropertiesMutation
 } from "../Redux/api/Property";
 import PropertyImageSlider from "../UI/PropertyImageSlider";
+import toast from "react-hot-toast";
 
 const PropertyDetails = () => {
     const { id } = useParams();
@@ -29,7 +30,7 @@ const PropertyDetails = () => {
     const [deleteCommercialProperty] = useDeleteCommercialPropertyMutation();
     const [deleteResidentialProperties] = useDeleteResidentialPropertiesMutation();
 
-    
+
 
     useEffect(() => {
         if (property) setFormData(property);
@@ -137,8 +138,17 @@ const PropertyDetails = () => {
                 await updateResidentialProperties({ id: residential.propertyId, body: formData });
 
             setIsEditing(false);
+            toast.success('Property Updated successfully!',
+                {
+                    style: {
+                        borderRadius: '10px',
+                        background: '#333',
+                        color: '#fff',
+                    },
+                }
+            );
         } catch {
-            alert("Update failed!");
+            toast.error("Update failed!");
         }
     };
 
@@ -146,6 +156,15 @@ const PropertyDetails = () => {
         try {
             if (commercial) await deleteCommercialProperty(id);
             else if (residential) await deleteResidentialProperties(id);
+            toast.success('Deleted successfully!',
+                {
+                    style: {
+                        borderRadius: '10px',
+                        background: '#333',
+                        color: '#fff',
+                    },
+                }
+            );
             navigate("/property")
         } catch { }
     };

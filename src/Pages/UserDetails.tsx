@@ -28,9 +28,6 @@ const UserDetails = () => {
     checkRole()
   }, [id, roleForm,addRole])
   
-  console.log(role);
-  
-
 
   if (isLoading)
     return (

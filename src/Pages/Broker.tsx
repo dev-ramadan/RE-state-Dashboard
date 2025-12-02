@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import { useDeleteBrokerMutation, useGetBrokerQuery } from "../Redux/api/Broker";
 import { Trash2, Info } from "lucide-react";
+import toast from "react-hot-toast";
 
 interface IProps { }
 
@@ -10,10 +11,21 @@ const Broker = ({ }: IProps) => {
 
   const handleDelete = async (id: string) => {
     try {
-      const res = await deleteBroker(id).unwrap();
-      console.log("Deleted successfully:", res);
+      await deleteBroker(id).unwrap();
+      toast('Deleted successfully!',
+        {
+          icon: '👏',
+          style: {
+            borderRadius: '10px',
+            background: '#333',
+            color: '#fff',
+          },
+        }
+      );
     } catch (err) {
-      console.error("Failed to delete broker:", err);
+      toast.error("Failed to delete broker:");
+      console.log(err);
+      
     }
   };
   if (isLoading)
