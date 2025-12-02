@@ -1,5 +1,5 @@
 import { useDeleteUserMutation, useGetCustomersQuery } from "../Redux/api/Users";
-import { Trash2, Edit, Info, ArrowBigLeftDash, ArrowBigRightDash } from "lucide-react";
+import { Trash2,Info, ArrowBigLeftDash, ArrowBigRightDash } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router";
 
@@ -61,12 +61,6 @@ const Customers = ({ }: IProps) => {
                 <td className="py-2 px-4">{user.phoneNumber}</td>
                 <td className="py-2 px-4 flex gap-2">
                   <button
-                    className="p-1 rounded hover:bg-yellow-100 text-yellow-500 transition"
-                    title="Edit"
-                  >
-                    <Edit />
-                  </button>
-                  <button
                     className="p-1 rounded hover:bg-red-100 text-red-500 transition"
                     title="Delete"
                   >
@@ -109,9 +103,6 @@ const Customers = ({ }: IProps) => {
             <div className="flex justify-between items-center mb-2">
               <h2 className="font-semibold">{user.username}</h2>
               <div className="flex gap-2">
-                <button className="p-1 rounded hover:bg-yellow-100 text-yellow-500 transition">
-                  <Edit />
-                </button>
                 <button className="p-1 rounded hover:bg-red-100 text-red-500 transition">
                   <Trash2 onClick={() => handleDelete(user.userId)} />
                 </button>

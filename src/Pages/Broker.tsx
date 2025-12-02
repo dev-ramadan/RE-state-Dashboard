@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { useDeleteBrokerMutation, useGetBrokerQuery } from "../Redux/api/Broker";
-import { Trash2, Edit, Info } from "lucide-react";
+import { Trash2, Info } from "lucide-react";
 
 interface IProps { }
 
@@ -58,12 +58,6 @@ const Broker = ({ }: IProps) => {
                 <td className="py-2 px-4">{broker.user.phoneNumber}</td>
                 <td className="py-2 px-4 flex gap-2">
                   <button
-                    className="p-1 rounded hover:bg-yellow-100 text-yellow-500 transition"
-                    title="Edit"
-                  >
-                    <Edit />
-                  </button>
-                  <button
                     className="p-1 rounded hover:bg-red-100 text-red-500 transition"
                     title="Delete"
                   >
@@ -89,9 +83,7 @@ const Broker = ({ }: IProps) => {
             <div className="flex justify-between items-center mb-2">
               <h2 className="font-semibold">{broker.user.username}</h2>
               <div className="flex gap-2">
-                <button className="p-1 rounded hover:bg-yellow-100 text-yellow-500 transition">
-                  <Edit />
-                </button>
+
                 <button className="p-1 rounded hover:bg-red-100 text-red-500 transition">
                   <Trash2 onClick={() => handleDelete(broker.id)} />
                 </button>
