@@ -55,9 +55,9 @@ const Login = () => {
 
       let errorMsg = "Invalid username or password";
 
-      if (err?.data?.message) {
-        errorMsg = err.data.message;
-      }
+      // if (err?.data?.message) {
+      //   errorMsg = err.data.message;
+      // }
 
       setValidation(errorMsg);
       setAdminAllowed(false);
