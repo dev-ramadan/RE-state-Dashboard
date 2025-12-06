@@ -55,9 +55,9 @@ const Login = () => {
 
       let errorMsg = "Invalid username or password";
 
-      // if (err?.data?.message) {
-      //   errorMsg = err.data.message;
-      // }
+      if (err?.data?.message) {
+        errorMsg = err.data.message;
+      }
 
       setValidation(errorMsg);
       setAdminAllowed(false);
@@ -120,7 +120,7 @@ const Login = () => {
             animate={{ opacity: 1 }}
             className="text-red-400 font-medium text-center mt-5 bg-red-900/30 px-4 py-2 rounded-lg"
           >
-            {validation}
+            {validation || 'Invalid username or password'}
           </motion.p>
         )}
       </motion.div>
