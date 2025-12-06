@@ -1,12 +1,11 @@
-import { lazy, Suspense } from "react";
+import {  Suspense } from "react";
 import { usePropertyAnalytics } from "../hooks/usePropertyAnalytics";
+import PropertyTypeChart from "../components/PropertyTypeChart";
+import PurposeChart from "../components/PurposeChart";
+import CitiesChart from "../components/CitiesChart";
+import PropertyByMonthChart from "../components/PropertyByMonthChart";
+import LIkesChart from "../components/LIkesChart";
 
-// Lazy imports for charts
-const PropertyTypeChart = lazy(() => import("../components/PropertyTypeChart"));
-const CitiesChart = lazy(() => import("../components/CitiesChart"));
-const MonthChart = lazy(() => import("../components/PropertyByMonthChart"));
-const PurposeChart = lazy(() => import("../components/PurposeChart"));
-const LikesChart = lazy(() => import("../components/LIkesChart"));
 
 // Simple Spinner component
 const Spinner = () => (
@@ -40,12 +39,12 @@ const Analytics = () => {
         </Suspense>
 
         <Suspense fallback={<Spinner />}>
-          <MonthChart data={monthData} />
+          <PropertyByMonthChart data={monthData} />
         </Suspense>
 
         <div className="col-span-1 sm:col-span-2">
           <Suspense fallback={<Spinner />}>
-            <LikesChart data={likesData} />
+            <LIkesChart data={likesData} />
           </Suspense>
         </div>
 
