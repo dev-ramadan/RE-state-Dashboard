@@ -10,6 +10,8 @@ interface ContextType {
     setRoleForm: (e: boolean) => void,
     addRole: boolean;
     setAddRole: (e: boolean) => void,
+    edit: boolean;
+    setEdit: (e: boolean) => void,
 }
 
 interface OureProviderProps {
@@ -24,6 +26,8 @@ export const OureProvider = ({ children }: OureProviderProps) => {
     const [userId, setUserId] = useState("");
     const [roleForm, setRoleForm] = useState(false)
     const [addRole, setAddRole] = useState(false)
+    const [edit, setEdit] = useState(false)
+
 
 
     return (
@@ -37,7 +41,9 @@ export const OureProvider = ({ children }: OureProviderProps) => {
             roleForm,
             setRoleForm,
             addRole,
-            setAddRole
+            setAddRole,
+            edit,
+            setEdit
         }}>
             {children}
         </OureContext.Provider>

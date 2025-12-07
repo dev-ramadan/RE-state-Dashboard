@@ -7,6 +7,10 @@ import toast from "react-hot-toast";
 
 
 const DeleteUserRole = ({ id }: any) => {
+    const context = useContext(OureContext);
+    if (!context) return null;
+    const { addRole, setAddRole, edit,setEdit } = context;
+    const [removeUserRole, { isLoading }] = useRemoveUserRoleMutation();
     const [selectedRoleId, setSelectedRoleId] = useState("");
     const [role, setRole] = useState<any>({
         userId: id,
@@ -18,12 +22,7 @@ const DeleteUserRole = ({ id }: any) => {
             setRole(uRole)
         }
         checkRole()
-    }, [id])
-    const context = useContext(OureContext);
-    if (!context) return null;
-
-    const { addRole, setAddRole } = context;
-    const [removeUserRole, { isLoading }] = useRemoveUserRoleMutation();
+    }, [id,edit])
 
     const handleDeleteRole = async () => {
         if (!selectedRoleId) return toast("⚠  Please Select Role!");
@@ -42,6 +41,7 @@ const DeleteUserRole = ({ id }: any) => {
                     },
                 }
             );
+            setEdit(false)
             setAddRole(false);
         } catch { }
     };

@@ -11,7 +11,7 @@ const UpdateUserForm = ({ id }: any) => {
     });
     const context = useContext(OureContext);
     if (!context) throw new Error("OureContext is undefined");
-    const { roleForm, setRoleForm } = context;
+    const { roleForm, setRoleForm,setEdit } = context;
     const [addUserRole] = useAddUserRoleMutation();
 
     const { data: role, isLoading } = useGetRolesQuery();
@@ -28,10 +28,11 @@ const UpdateUserForm = ({ id }: any) => {
                     },
                 }
             );
+            setEdit(true)
             setRoleForm(false)
         } catch { }
     };
-    if (isLoading) return <p>loading...</p>;
+    if (isLoading) return <p className="animate-bounce">loading...</p>;
 
     return (
         <>
