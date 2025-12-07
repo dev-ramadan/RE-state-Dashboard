@@ -33,7 +33,7 @@ const PropertyDetails = () => {
 
 
     useEffect(() => {
-        if (property) setFormData(property);
+        if (property) setFormData(JSON.parse(JSON.stringify(property)));
     }, [property]);
 
     if (!property) return <p className="text-center mt-10">Loading...</p>;
